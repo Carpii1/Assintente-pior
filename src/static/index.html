@@ -1,0 +1,1885 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>PIOR — Assistente Multimodal Desktop</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800;900&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #080a10;
+      --bg-card: rgba(15, 19, 32, 0.78);
+      --bg-input: rgba(10, 14, 24, 0.92);
+      --neon-cyan: #00f7ff;
+      --neon-magenta: #ff007f;
+      --neon-purple: #9d00ff;
+      --neon-green: #00ff88;
+      --text-main: #f0f4fc;
+      --text-muted: #8393aa;
+      --border-glow: rgba(0, 247, 255, 0.28);
+      --border-card: rgba(255, 255, 255, 0.08);
+      --gradient-brand: linear-gradient(135deg, #00f7ff 0%, #9d00ff 50%, #ff007f 100%);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg-dark);
+      background-image: 
+        radial-gradient(circle at 10% 10%, rgba(0, 247, 255, 0.08) 0%, transparent 45%),
+        radial-gradient(circle at 90% 20%, rgba(255, 0, 127, 0.07) 0%, transparent 45%),
+        radial-gradient(circle at 50% 90%, rgba(157, 0, 255, 0.08) 0%, transparent 50%);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+
+    /* Header */
+    header {
+      padding: 10px 22px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border-glow);
+      backdrop-filter: blur(14px);
+      background: rgba(8, 10, 16, 0.9);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-logo-container {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1.5px solid var(--neon-cyan);
+      box-shadow: 0 0 14px rgba(0, 247, 255, 0.35);
+      background: #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .brand-logo-container img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .brand-titles h1 {
+      font-family: 'Orbitron', monospace;
+      font-size: 18px;
+      letter-spacing: 1.5px;
+      background: var(--gradient-brand);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .brand-titles p {
+      font-size: 9.5px;
+      color: var(--text-muted);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      font-weight: 500;
+    }
+
+    .header-indicators {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 11px;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .status-badge {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 20px;
+      background: rgba(0, 255, 136, 0.1);
+      border: 1px solid rgba(0, 255, 136, 0.3);
+      color: var(--neon-green);
+    }
+
+    .pulse-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--neon-green);
+      box-shadow: 0 0 8px var(--neon-green);
+      animation: pulse 1.8s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(0.9); opacity: 0.6; }
+      50% { transform: scale(1.3); opacity: 1; }
+    }
+
+    .app-wrapper {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      padding: 14px 20px;
+      max-width: 1820px;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    /* Feeds Area: Unified Panoramic Screen Strip on top */
+    .panoramic-section {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      width: 100%;
+    }
+
+    .panoramic-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-card);
+      border-radius: 14px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 6px 24px rgba(0, 0, 0, 0.45);
+      position: relative;
+    }
+
+    .panoramic-header {
+      padding: 7px 14px;
+      background: rgba(0, 0, 0, 0.45);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 11px;
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--text-muted);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .panoramic-viewport {
+      width: 100%;
+      height: 195px;
+      background: #020408;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Long panoramic canvas combining all displays seamlessly */
+    #panoramicCanvas {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      background: #000;
+      display: block;
+    }
+
+    .pip-webcam {
+      position: absolute;
+      bottom: 10px;
+      right: 12px;
+      width: 140px;
+      height: 95px;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1.5px solid var(--neon-cyan);
+      box-shadow: 0 0 15px rgba(0, 247, 255, 0.3);
+      background: #000;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .pip-webcam video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .pip-label {
+      position: absolute;
+      top: 4px;
+      left: 6px;
+      font-size: 9px;
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--neon-cyan);
+      background: rgba(0, 0, 0, 0.6);
+      padding: 1px 4px;
+      border-radius: 4px;
+    }
+
+    .scan-line {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 2px;
+      background: linear-gradient(90deg, transparent, var(--neon-cyan), transparent);
+      box-shadow: 0 0 8px var(--neon-cyan);
+      animation: scan 3s linear infinite;
+      pointer-events: none;
+      z-index: 5;
+    }
+
+    @keyframes scan {
+      0% { top: 0%; opacity: 0.2; }
+      50% { opacity: 0.8; }
+      100% { top: 100%; opacity: 0.2; }
+    }
+
+    /* Chat Section */
+    .chat-section {
+      flex: 1;
+      min-height: 480px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-card);
+      border-radius: 16px;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 10px 35px rgba(0, 0, 0, 0.55);
+      backdrop-filter: blur(14px);
+      overflow: hidden;
+    }
+
+    .chat-header {
+      padding: 10px 16px;
+      background: rgba(10, 14, 24, 0.88);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .chat-title {
+      font-family: 'Orbitron', monospace;
+      font-size: 13px;
+      color: var(--neon-cyan);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .tuning-controls {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: rgba(0, 0, 0, 0.35);
+      padding: 5px 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      font-size: 11px;
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--text-muted);
+      flex-wrap: wrap;
+    }
+
+    .tuning-controls label {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+    }
+
+    .tuning-controls input[type="range"] {
+      width: 70px;
+      accent-color: var(--neon-cyan);
+      cursor: pointer;
+    }
+
+    .tuning-val {
+      color: var(--neon-cyan);
+      font-weight: bold;
+      min-width: 28px;
+    }
+
+    .btn-toggle-active {
+      background: rgba(0, 247, 255, 0.18) !important;
+      border-color: var(--neon-cyan) !important;
+      color: #fff !important;
+      box-shadow: 0 0 10px rgba(0, 247, 255, 0.3);
+    }
+
+    .btn-toggle-muted {
+      background: rgba(255, 255, 255, 0.05) !important;
+      border-color: rgba(255, 255, 255, 0.15) !important;
+      color: var(--text-muted) !important;
+    }
+
+    .chat-messages {
+      flex: 1;
+      padding: 16px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      scroll-behavior: smooth;
+      min-height: 240px;
+      max-height: 520px;
+    }
+
+    .chat-messages::-webkit-scrollbar { width: 6px; }
+    .chat-messages::-webkit-scrollbar-thumb { background: rgba(0, 247, 255, 0.2); border-radius: 4px; }
+
+    .msg-bubble {
+      max-width: 85%;
+      padding: 12px 16px;
+      border-radius: 14px;
+      font-size: 13.5px;
+      line-height: 1.5;
+      animation: fadeIn 0.2s ease-out;
+      word-break: break-word;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .msg-user {
+      align-self: flex-end;
+      background: linear-gradient(135deg, rgba(0, 247, 255, 0.18), rgba(157, 0, 255, 0.28));
+      border: 1px solid rgba(0, 247, 255, 0.4);
+      color: #fff;
+      border-bottom-right-radius: 2px;
+    }
+
+    .msg-assistant {
+      align-self: flex-start;
+      background: rgba(23, 29, 44, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: #e4ecfa;
+      border-bottom-left-radius: 2px;
+    }
+
+    .msg-header {
+      font-size: 11px;
+      font-weight: 700;
+      margin-bottom: 5px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .msg-user .msg-header { color: var(--neon-cyan); }
+    .msg-assistant .msg-header { color: var(--neon-magenta); }
+
+    .pill-status {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      padding: 2px 7px;
+      border-radius: 10px;
+      font-weight: 600;
+    }
+
+    .pill-enviando {
+      background: rgba(255, 204, 0, 0.15);
+      color: #ffcc00;
+      border: 1px solid rgba(255, 204, 0, 0.3);
+    }
+
+    .pill-enviado {
+      background: rgba(0, 255, 136, 0.15);
+      color: var(--neon-green);
+      border: 1px solid rgba(0, 255, 136, 0.3);
+    }
+
+    .pill-latency {
+      background: rgba(0, 247, 255, 0.15);
+      color: var(--neon-cyan);
+      border: 1px solid rgba(0, 247, 255, 0.3);
+    }
+
+    .chat-footer {
+      padding: 12px 16px;
+      background: rgba(10, 14, 22, 0.95);
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .wakeword-banner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 7px 12px;
+      border-radius: 10px;
+      background: rgba(0, 247, 255, 0.08);
+      border: 1px solid rgba(0, 247, 255, 0.25);
+      font-size: 12px;
+    }
+
+    .wakeword-status {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      color: var(--neon-cyan);
+      font-weight: 600;
+    }
+
+    .wakeword-glow {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--neon-cyan);
+      box-shadow: 0 0 10px var(--neon-cyan);
+      transition: all 0.3s ease;
+    }
+
+    .wakeword-glow.listening {
+      background: var(--neon-magenta);
+      box-shadow: 0 0 16px var(--neon-magenta);
+      animation: pulse 1s infinite;
+    }
+
+    .input-row {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .input-row textarea {
+      flex: 1;
+      background: var(--bg-input);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 12px;
+      padding: 10px 14px;
+      color: #fff;
+      font-family: inherit;
+      font-size: 13.5px;
+      resize: none;
+      height: 44px;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .input-row textarea:focus {
+      border-color: var(--neon-cyan);
+      box-shadow: 0 0 12px rgba(0, 247, 255, 0.25);
+    }
+
+    .btn {
+      padding: 0 18px;
+      height: 44px;
+      border-radius: 12px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      transition: all 0.2s;
+      flex-shrink: 0;
+    }
+
+    .btn-send {
+      background: var(--gradient-brand);
+      color: #fff;
+      box-shadow: 0 0 15px rgba(0, 247, 255, 0.3);
+    }
+
+    .btn-send:hover {
+      box-shadow: 0 0 25px rgba(0, 247, 255, 0.55);
+      transform: translateY(-1px);
+    }
+
+    .btn-action {
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--text-main);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      font-size: 11px;
+      height: 28px;
+      padding: 0 10px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .btn-action:hover {
+      background: rgba(255, 255, 255, 0.16);
+    }
+
+    .btn-stop-voice {
+      display: none;
+      background: rgba(255, 60, 60, 0.2);
+      color: #ff6666;
+      border: 1px solid #ff4444;
+      font-size: 11px;
+      padding: 4px 10px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .footer-hints {
+      font-size: 11px;
+      color: var(--text-muted);
+      display: flex;
+      justify-content: space-between;
+      padding: 0 4px;
+    }
+
+    @media (max-width: 900px) {
+      .app-wrapper { padding: 10px 14px; gap: 10px; }
+      .panoramic-viewport { height: 140px; }
+      .tuning-controls { width: 100%; justify-content: space-between; }
+    }
+
+    /* Brain Controls & Telemetry HUD */
+    .telemetry-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--bg-card);
+      border: 1px solid var(--border-glow);
+      border-radius: 14px;
+      padding: 10px 16px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.45);
+      backdrop-filter: blur(12px);
+    }
+
+    .brain-controls {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .btn-brain {
+      height: 38px;
+      padding: 0 16px;
+      border-radius: 10px;
+      border: none;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 12px;
+      font-family: 'Orbitron', monospace;
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+    }
+
+    .btn-brain:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .btn-brain-start {
+      background: linear-gradient(135deg, #00f7ff, #00a6ff);
+      color: #030a16;
+      box-shadow: 0 0 14px rgba(0, 247, 255, 0.4);
+    }
+
+    .btn-brain-start:hover:not(:disabled) {
+      box-shadow: 0 0 22px rgba(0, 247, 255, 0.7);
+      transform: translateY(-1px);
+    }
+
+    .btn-brain-stop {
+      background: rgba(255, 60, 60, 0.15);
+      color: #ff6666;
+      border: 1px solid rgba(255, 60, 60, 0.4);
+    }
+
+    .btn-brain-stop:hover:not(:disabled) {
+      background: rgba(255, 60, 60, 0.25);
+      border-color: #ff4444;
+    }
+
+    .model-select-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(0, 0, 0, 0.45);
+      padding: 4px 10px;
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      font-size: 11px;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .model-select-wrap label {
+      color: var(--neon-cyan);
+      font-weight: bold;
+    }
+
+    .model-select-wrap select {
+      background: #0d121f;
+      color: #fff;
+      border: 1px solid rgba(0, 247, 255, 0.3);
+      padding: 5px 8px;
+      border-radius: 6px;
+      font-family: inherit;
+      font-size: 11px;
+      outline: none;
+      cursor: pointer;
+    }
+
+    /* 4 Model Quick Switch Buttons */
+    .brain-models-group {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(4, 7, 15, 0.65);
+      padding: 4px 6px;
+      border-radius: 12px;
+      border: 1px solid rgba(0, 247, 255, 0.2);
+      flex-wrap: wrap;
+    }
+
+    .btn-model-choice {
+      padding: 6px 13px;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(13, 18, 31, 0.85);
+      color: #9ab0ce;
+      cursor: pointer;
+      font-family: 'JetBrains Mono', monospace;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+      transition: all 0.25s ease;
+      user-select: none;
+    }
+
+    .btn-model-choice .model-name {
+      font-weight: 700;
+      color: #e2eafc;
+      font-size: 11.5px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .btn-model-choice .model-desc {
+      font-size: 9px;
+      color: var(--text-muted);
+      letter-spacing: 0.3px;
+    }
+
+    .btn-model-choice:hover:not(:disabled) {
+      border-color: var(--neon-cyan);
+      color: #fff;
+      background: rgba(0, 247, 255, 0.12);
+      transform: translateY(-1px);
+      box-shadow: 0 0 10px rgba(0, 247, 255, 0.25);
+    }
+
+    .btn-model-choice.active {
+      background: linear-gradient(135deg, rgba(0, 247, 255, 0.25), rgba(157, 0, 255, 0.25));
+      border: 1.5px solid var(--neon-cyan);
+      box-shadow: 0 0 16px rgba(0, 247, 255, 0.5);
+    }
+
+    .btn-model-choice.active .model-name {
+      color: #00f7ff;
+      text-shadow: 0 0 8px rgba(0, 247, 255, 0.8);
+    }
+
+    .btn-model-choice.active .model-desc {
+      color: #bbf8ff;
+    }
+
+    .brain-pill {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 600;
+      transition: all 0.3s;
+    }
+
+    .brain-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: currentColor;
+      box-shadow: 0 0 6px currentColor;
+    }
+
+    .brain-pill-active {
+      background: rgba(0, 255, 136, 0.12);
+      border: 1px solid rgba(0, 255, 136, 0.4);
+      color: var(--neon-green);
+    }
+
+    .brain-pill-idle {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: var(--text-muted);
+    }
+
+    .brain-pill-loading {
+      background: rgba(0, 247, 255, 0.12);
+      border: 1px solid rgba(0, 247, 255, 0.4);
+      color: var(--neon-cyan);
+      animation: pulse 1s infinite;
+    }
+
+    .telemetry-gauges {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .gauge-card {
+      background: rgba(0, 0, 0, 0.45);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 10px;
+      padding: 6px 12px;
+      min-width: 195px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .gauge-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 10.5px;
+    }
+
+    .gauge-title {
+      color: var(--neon-cyan);
+      font-weight: 600;
+    }
+
+    .gauge-meta {
+      font-size: 9.5px;
+      color: var(--text-muted);
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 7px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 4px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: var(--neon-cyan);
+      border-radius: 4px;
+      transition: width 0.4s ease, background 0.3s ease;
+      box-shadow: 0 0 8px currentColor;
+    }
+
+    .gauge-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 10px;
+      color: var(--text-main);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="brand">
+      <div class="brand-logo-container">
+        <img id="logoImg" src="/logo" alt="Logo PIOR" onerror="this.src='/static/logo.png'">
+      </div>
+      <div class="brand-titles">
+        <h1>PIOR MULTIMODAL</h1>
+        <p>Visão Panorâmica de Monitores &amp; Conversação Natural</p>
+      </div>
+    </div>
+
+    <div class="header-indicators">
+      <div class="status-badge">
+        <div class="pulse-dot"></div>
+        <span>SISTEMA ATIVO</span>
+      </div>
+      <div id="globalLatency" style="color: var(--text-muted);">Latência: -- ms</div>
+    </div>
+  </header>
+
+  <!-- App Wrapper -->
+  <div class="app-wrapper">
+
+    <!-- CÉREBRO LOCAL OLLAMA & TELEMETRIA DE HARDWARE (GPU / RAM) -->
+    <div class="telemetry-bar">
+      <!-- Left: Brain Controls -->
+      <div class="brain-controls">
+        <button id="btnStartBrain" class="btn-brain btn-brain-start" title="Carregar modelo no Ollama com prioridade para menor parâmetro (8B)">
+          🧠 <span id="btnStartBrainText">Ligar Cérebro (8B)</span>
+        </button>
+        <button id="btnUnloadBrain" class="btn-brain btn-brain-stop" title="Descarregar modelo da memória e liberar GPU VRAM">
+          ⏸️ Desligar Cérebro
+        </button>
+
+        <!-- 4 Botões Diretos de Seleção de Modelo -->
+        <div class="brain-models-group" id="brainModelsGroup">
+          <button type="button" class="btn-model-choice" data-model="qwen3:8b" id="btnModel_8b" title="qwen3:8b (8B • Ultrarrápido • 5.2GB)">
+            <span class="model-name">⚡ 8B</span>
+            <span class="model-desc">Texto • Rápido</span>
+          </button>
+          <button type="button" class="btn-model-choice active" data-model="qwen3-vl:8b" id="btnModel_vl8b" title="pior-vl:8b (8B Multimodal Treinado • Visão de Telas e Webcam • 6.2GB)">
+            <span class="model-name">👁️ PIOR 8B</span>
+            <span class="model-desc">Visão Treinada</span>
+          </button>
+          <button type="button" class="btn-model-choice" data-model="qwen3:14b" id="btnModel_14b" title="qwen3:14b (14B • Raciocínio Profundo • 9.3GB)">
+            <span class="model-name">🧠 14B</span>
+            <span class="model-desc">Raciocínio</span>
+          </button>
+          <button type="button" class="btn-model-choice" data-model="qwen3-vl:32b" id="btnModel_vl32b" title="qwen3-vl:32b (32B • Visão Avançada • 20GB)">
+            <span class="model-name">🔮 VL 32B</span>
+            <span class="model-desc">Visão Pro</span>
+          </button>
+        </div>
+
+        <!-- Seletor compatível / dropdown secundário -->
+        <select id="brainModelSelect" style="display:none;">
+          <option value="qwen3-vl:8b" selected>qwen3-vl:8b (VL 8B)</option>
+          <option value="qwen3:8b">qwen3:8b (8B)</option>
+          <option value="qwen3:14b">qwen3:14b (14B)</option>
+          <option value="qwen3-vl:32b">qwen3-vl:32b (VL 32B)</option>
+        </select>
+
+        <div id="brainStatusBadge" class="brain-pill brain-pill-idle">
+          <span class="brain-dot"></span>
+          <span id="brainStatusText">Ocioso</span>
+        </div>
+      </div>
+
+      <!-- Right: Real-time Telemetry (GPU & RAM) -->
+      <div class="telemetry-gauges">
+        <!-- GPU VRAM & Util -->
+        <div class="gauge-card" title="Telemetria de GPU via nvidia-smi">
+          <div class="gauge-header">
+            <span class="gauge-title">🎮 GPU: <span id="gpuModelName" style="color:#fff; font-size:10px;">RTX 3060</span></span>
+            <span id="gpuUtilBadge" class="gauge-meta">0% • 0°C</span>
+          </div>
+          <div class="progress-track">
+            <div id="vramBar" class="progress-fill" style="width: 0%;"></div>
+          </div>
+          <div class="gauge-footer">
+            <span>VRAM: <strong id="vramUsageText">0.0 / 12.0 GB</strong></span>
+            <span id="vramPctText" style="font-weight:700;">0%</span>
+          </div>
+        </div>
+
+        <!-- System RAM -->
+        <div class="gauge-card" title="Memória RAM do Sistema">
+          <div class="gauge-header">
+            <span class="gauge-title">⚡ RAM DO SISTEMA</span>
+            <span id="ramPctBadge" class="gauge-meta">0%</span>
+          </div>
+          <div class="progress-track">
+            <div id="ramBar" class="progress-fill" style="width: 0%;"></div>
+          </div>
+          <div class="gauge-footer">
+            <span>Uso: <strong id="ramUsageText">0.0 / 0.0 GB</strong></span>
+            <span id="ramFreeText" style="color:var(--text-muted); font-size:10px;">Livre: 0 GB</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- UNIFIED PANORAMIC SCREEN STRIP (LONG BOX CONTAINING ALL MONITORS + WEBCAM PIP) -->
+    <div class="panoramic-section">
+      <div class="panoramic-card">
+        <div class="panoramic-header">
+          <div style="display:flex; align-items:center; gap:10px;">
+            <span style="color:var(--neon-cyan); font-weight:700;">🖥️ TODOS OS MONITORES UNIFICADOS (CAIXA PANORÂMICA CONTÍNUA)</span>
+            <span class="badge-live" id="panoramicLiveBadge" style="display:none; font-size:10px; color:#ff3366; font-weight:bold;">● LIVE</span>
+          </div>
+          <div style="display:flex; align-items:center; gap:8px;">
+            <button id="btnAddMonitor" class="btn-action">+ Adicionar Monitor à Caixa</button>
+            <button id="btnClearMonitors" class="btn-action" style="display:none;">Limpar Telas</button>
+            <span id="monitorsCountLabel" style="font-size:10px; color:var(--text-muted);">0 monitores ativos</span>
+          </div>
+        </div>
+
+        <div class="panoramic-viewport">
+          <div class="scan-line"></div>
+          <!-- Continuous stitched panoramic canvas -->
+          <canvas id="panoramicCanvas"></canvas>
+
+          <!-- PiP Webcam Box on bottom-right -->
+          <div class="pip-webcam" title="Webcam do Usuário">
+            <span class="pip-label">WEBCAM</span>
+            <video id="webcamVideo" autoplay muted playsinline></video>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Offscreen Video Pool for holding active monitor streams (avoid display:none to allow video decoding) -->
+    <div id="hiddenVideoPool" style="position: fixed; top: -9999px; left: -9999px; width: 1px; height: 1px; opacity: 0.001; pointer-events: none; overflow: hidden;"></div>
+
+    <!-- Chat Section -->
+    <div class="chat-section">
+      <div class="chat-header">
+        <div class="chat-title">
+          <span>💬</span> CHAT COM PIOR
+        </div>
+
+        <div class="tuning-controls">
+          <button id="btnVoiceToggle" class="btn-action btn-toggle-active" title="Ativar ou desativar resposta em voz do assistente">🔊 Voz: Ligada</button>
+          <button id="btnModeToggle" class="btn-action btn-toggle-active" title="Alternar entre respostas diretas e detalhadas">⚡ Modo: Direto</button>
+          <button id="btnClearHistory" class="btn-action" title="Zerar memória da conversa">🗑️ Limpar Contexto</button>
+
+          <!-- Voice Speed Control -->
+          <label title="Ajuste a velocidade da fala do assistente">
+            <span>Velocidade:</span>
+            <input type="range" id="speechRateSlider" min="0.8" max="2.2" step="0.1" value="1.3">
+            <span class="tuning-val" id="speechRateVal">1.3x</span>
+          </label>
+
+          <!-- Tempo de pausa do microfone (liberdade para pensar) -->
+          <label title="Tempo de pausa para você pensar antes do PIOR responder">
+            <span>Pausa Mic:</span>
+            <input type="range" id="micPauseSlider" min="1.0" max="4.0" step="0.2" value="2.2">
+            <span class="tuning-val" id="micPauseVal">2.2s</span>
+          </label>
+
+          <button id="stopVoiceBtn" class="btn-stop-voice" title="Interromper fala da IA">⏹️ Interromper</button>
+        </div>
+      </div>
+
+      <!-- Chat History -->
+      <div class="chat-messages" id="chatMessages">
+        <div class="msg-bubble msg-assistant">
+          <div class="msg-header">
+            <span>PIOR</span>
+            <span class="pill-status pill-latency">Pronto</span>
+          </div>
+          Olá! Sou o <strong>PIOR</strong>. Todos os seus monitores agora podem ser unificados na <strong>caixa panorâmica contínua</strong> acima. Basta clicar em <strong>+ Adicionar Monitor à Caixa</strong> para cada tela que desejar anexar. O microfone está calibrado com tempo estendido para você pensar, e eu só consulto as telas quando você me pedir!
+        </div>
+      </div>
+
+      <!-- Footer & Controls -->
+      <div class="chat-footer">
+        <div class="wakeword-banner">
+          <div class="wakeword-status">
+            <div class="wakeword-glow" id="wakeGlow"></div>
+            <span id="wakeStatusText">Aguardando ativação por voz: Diga "Pior, ..."</span>
+          </div>
+          <button id="toggleVoiceRecBtn" class="btn-action">Pausar Mic</button>
+        </div>
+
+        <div class="input-row">
+          <textarea id="chatInput" placeholder="Diga 'Pior, ...' no microfone ou digite sua pergunta (Enter envia)..."></textarea>
+          <button id="sendBtn" class="btn btn-send">Enviar</button>
+        </div>
+
+        <div class="footer-hints">
+          <span>⌨️ Pressione <strong>Enter</strong> para enviar | <strong>Shift + Enter</strong> para nova linha</span>
+          <span id="delayTrackerText">Status: Pronto</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    const chatMessages = document.getElementById('chatMessages');
+    const chatInput = document.getElementById('chatInput');
+    const sendBtn = document.getElementById('sendBtn');
+    const globalLatency = document.getElementById('globalLatency');
+    const delayTrackerText = document.getElementById('delayTrackerText');
+    const wakeGlow = document.getElementById('wakeGlow');
+    const wakeStatusText = document.getElementById('wakeStatusText');
+    const toggleVoiceRecBtn = document.getElementById('toggleVoiceRecBtn');
+    const stopVoiceBtn = document.getElementById('stopVoiceBtn');
+    const speechRateSlider = document.getElementById('speechRateSlider');
+    const speechRateVal = document.getElementById('speechRateVal');
+    const micPauseSlider = document.getElementById('micPauseSlider');
+    const micPauseVal = document.getElementById('micPauseVal');
+    const btnVoiceToggle = document.getElementById('btnVoiceToggle');
+    const btnModeToggle = document.getElementById('btnModeToggle');
+    const btnClearHistory = document.getElementById('btnClearHistory');
+
+    const btnAddMonitor = document.getElementById('btnAddMonitor');
+    const btnClearMonitors = document.getElementById('btnClearMonitors');
+    const monitorsCountLabel = document.getElementById('monitorsCountLabel');
+    const panoramicLiveBadge = document.getElementById('panoramicLiveBadge');
+    const panoramicCanvas = document.getElementById('panoramicCanvas');
+    const panoramicCtx = panoramicCanvas.getContext('2d');
+    const hiddenVideoPool = document.getElementById('hiddenVideoPool');
+    const webcamVideo = document.getElementById('webcamVideo');
+
+    // Estado do App
+    let conversationHistory = [];
+    let isVoiceOutputEnabled = true;
+    let detailMode = "direto";
+
+    // Controles de sliders
+    speechRateSlider.oninput = () => {
+      speechRateVal.textContent = parseFloat(speechRateSlider.value).toFixed(1) + 'x';
+    };
+    micPauseSlider.oninput = () => {
+      micPauseVal.textContent = parseFloat(micPauseSlider.value).toFixed(1) + 's';
+    };
+
+    // Toggle Leitura / Voz
+    btnVoiceToggle.onclick = () => {
+      isVoiceOutputEnabled = !isVoiceOutputEnabled;
+      if (isVoiceOutputEnabled) {
+        btnVoiceToggle.textContent = '🔊 Voz: Ligada';
+        btnVoiceToggle.className = 'btn-action btn-toggle-active';
+      } else {
+        btnVoiceToggle.textContent = '🔇 Voz: Desligada';
+        btnVoiceToggle.className = 'btn-action btn-toggle-muted';
+        stopAssistantVoice();
+      }
+    };
+
+    // Toggle Direto vs Detalhes
+    btnModeToggle.onclick = () => {
+      if (detailMode === "direto") {
+        detailMode = "detalhado";
+        btnModeToggle.textContent = '📖 Modo: Detalhes';
+      } else {
+        detailMode = "direto";
+        btnModeToggle.textContent = '⚡ Modo: Direto';
+      }
+    };
+
+    // Limpar Histórico
+    btnClearHistory.onclick = () => {
+      conversationHistory = [];
+      const div = document.createElement('div');
+      div.className = 'msg-bubble msg-assistant';
+      div.innerHTML = '<em>Memória de contexto reiniciada. O que gostaria de saber agora?</em>';
+      chatMessages.appendChild(div);
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+    };
+
+    // ---------------- WEBCAM SETUP ----------------
+    async function startWebcam() {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({
+          video: { width: { ideal: 1280 }, height: { ideal: 720 } }
+        });
+        webcamVideo.srcObject = stream;
+
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        setInterval(() => {
+          if (webcamVideo.videoWidth > 0) {
+            canvas.width = 640;
+            canvas.height = 480;
+            ctx.drawImage(webcamVideo, 0, 0, canvas.width, canvas.height);
+            const b64 = canvas.toDataURL('image/jpeg', 0.7);
+            fetch('/upload_frame', {
+              method: 'POST',
+              headers: {'Content-Type': 'application/json'},
+              body: JSON.stringify({ source: 'webcam', image: b64 })
+            }).catch(() => {});
+          }
+        }, 1500);
+
+      } catch (e) {
+        console.warn("Webcam:", e);
+      }
+    }
+
+    window.addEventListener('load', () => startWebcam());
+
+    // ---------------- UNIFIED PANORAMIC LONG BOX ENGINE ----------------
+    // Array holding active monitor video elements: [video1, video2, video3, ...]
+    const activeMonitorStreams = [];
+
+    btnAddMonitor.onclick = async () => {
+      try {
+        const stream = await navigator.mediaDevices.getDisplayMedia({
+          video: { cursor: 'always' }
+        });
+
+        const video = document.createElement('video');
+        video.autoplay = true;
+        video.muted = true;
+        video.playsInline = true;
+        video.srcObject = stream;
+        hiddenVideoPool.appendChild(video);
+
+        video.onloadedmetadata = async () => {
+          try {
+            await video.play();
+            updateMonitorsUI();
+          } catch (e) {
+            console.warn("Monitor video metadata play error:", e);
+          }
+        };
+
+        try {
+          await video.play();
+        } catch (e) {}
+
+        activeMonitorStreams.push({ stream, video });
+
+        updateMonitorsUI();
+
+        stream.getVideoTracks()[0].onended = () => {
+          removeMonitorStream(stream);
+        };
+
+      } catch (e) {
+        console.warn("Captura cancelada:", e);
+      }
+    };
+
+    function removeMonitorStream(stream) {
+      const idx = activeMonitorStreams.findIndex(item => item.stream === stream);
+      if (idx !== -1) {
+        const removed = activeMonitorStreams.splice(idx, 1)[0];
+        try { removed.video.remove(); } catch (e) {}
+      }
+      updateMonitorsUI();
+    }
+
+    btnClearMonitors.onclick = () => {
+      while (activeMonitorStreams.length > 0) {
+        const item = activeMonitorStreams.pop();
+        try {
+          item.stream.getTracks().forEach(t => t.stop());
+          item.video.remove();
+        } catch (e) {}
+      }
+      updateMonitorsUI();
+    };
+
+    function updateMonitorsUI() {
+      const count = activeMonitorStreams.length;
+      monitorsCountLabel.textContent = `${count} monitor${count === 1 ? '' : 'es'} unificado${count === 1 ? '' : 's'}`;
+      if (count > 0) {
+        panoramicLiveBadge.style.display = 'inline-flex';
+        btnClearMonitors.style.display = 'inline-block';
+      } else {
+        panoramicLiveBadge.style.display = 'none';
+        btnClearMonitors.style.display = 'none';
+      }
+    }
+
+    // Continuous Render Loop: Stitches all active monitors horizontally into a long panoramic view
+    function renderPanoramicStrip() {
+      const count = activeMonitorStreams.length;
+
+      if (count === 0) {
+        // Draw elegant standby placeholder banner
+        panoramicCanvas.width = 1200;
+        panoramicCanvas.height = 200;
+        panoramicCtx.fillStyle = '#060810';
+        panoramicCtx.fillRect(0, 0, 1200, 200);
+
+        panoramicCtx.strokeStyle = 'rgba(0, 247, 255, 0.2)';
+        panoramicCtx.lineWidth = 1;
+        panoramicCtx.strokeRect(10, 10, 1180, 180);
+
+        panoramicCtx.fillStyle = '#8393aa';
+        panoramicCtx.font = '14px Inter, sans-serif';
+        panoramicCtx.textAlign = 'center';
+        panoramicCtx.fillText('Clique em "+ Adicionar Monitor à Caixa" acima para conectar seus monitores.', 600, 95);
+        panoramicCtx.font = '12px "JetBrains Mono", monospace';
+        panoramicCtx.fillStyle = 'rgba(0, 247, 255, 0.7)';
+        panoramicCtx.fillText('Eles serão unidos lado a lado em uma única caixa panorâmica contínua!', 600, 120);
+
+      } else {
+        // Calculate canvas width: sum of widths for panoramic aspect ratio (high fidelity 1080p height)
+        const targetHeight = 1080;
+        let totalTargetWidth = 0;
+        const monitorMetrics = [];
+
+        activeMonitorStreams.forEach(item => {
+          if (item.video.paused) {
+            item.video.play().catch(() => {});
+          }
+          const vw = item.video.videoWidth || 1920;
+          const vh = item.video.videoHeight || 1080;
+          const calcWidth = Math.round((targetHeight / vh) * vw);
+          monitorMetrics.push({ vw, vh, calcWidth });
+          totalTargetWidth += calcWidth;
+        });
+
+        if (panoramicCanvas.width !== totalTargetWidth || panoramicCanvas.height !== targetHeight) {
+          panoramicCanvas.width = totalTargetWidth;
+          panoramicCanvas.height = targetHeight;
+        }
+
+        // Draw each monitor seamlessly side by side with subtle neon dividers
+        let currentX = 0;
+        activeMonitorStreams.forEach((item, i) => {
+          const m = monitorMetrics[i];
+          if (item.video.videoWidth > 0) {
+            panoramicCtx.drawImage(item.video, currentX, 0, m.calcWidth, targetHeight);
+          }
+
+          // Divisor suave entre telas no preview panorâmico
+          if (i > 0) {
+            panoramicCtx.strokeStyle = 'rgba(0, 247, 255, 0.6)';
+            panoramicCtx.lineWidth = 2;
+            panoramicCtx.beginPath();
+            panoramicCtx.moveTo(currentX, 0);
+            panoramicCtx.lineTo(currentX, targetHeight);
+            panoramicCtx.stroke();
+          }
+
+          currentX += m.calcWidth;
+        });
+      }
+
+      requestAnimationFrame(renderPanoramicStrip);
+    }
+
+    renderPanoramicStrip();
+
+    // Sincronização periódica com o backend: envia cada monitor individual em alta resolução (Full HD sem distorção)
+    setInterval(() => {
+      if (activeMonitorStreams.length > 0) {
+        const panoramicB64 = (panoramicCanvas.width > 0) ? panoramicCanvas.toDataURL('image/jpeg', 0.85) : null;
+        
+        const individualFrames = [];
+        activeMonitorStreams.forEach(item => {
+          if (item.video && item.video.videoWidth > 0) {
+            const off = document.createElement('canvas');
+            const vh = item.video.videoHeight || 1080;
+            const vw = item.video.videoWidth || 1920;
+            const targetH = Math.min(vh, 1080);
+            const targetW = Math.round((targetH / vh) * vw);
+            off.width = targetW;
+            off.height = targetH;
+            const offCtx = off.getContext('2d');
+            offCtx.drawImage(item.video, 0, 0, targetW, targetH);
+            individualFrames.push(off.toDataURL('image/jpeg', 0.90));
+          }
+        });
+
+        fetch('/upload_frame', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({
+            source: 'unified_screen',
+            image: panoramicB64 || (individualFrames.length > 0 ? individualFrames[0] : null),
+            frames: individualFrames
+          })
+        }).catch(() => {});
+      }
+    }, 1500);
+
+    // ---------------- SPEECH SYNTHESIS ENGINE (COM RESUME E PROTEÇÃO ANTI-GC) ----------------
+    let isAssistantSpeaking = false;
+    let selectedVoice = null;
+    let currentUtterance = null;
+    let speechTimer = null;
+
+    // Unlocks browser autoplay policy on any user gesture
+    function unlockAudio() {
+      if (window.speechSynthesis) {
+        window.speechSynthesis.resume();
+      }
+    }
+    window.addEventListener('click', unlockAudio, { passive: true });
+    window.addEventListener('keydown', unlockAudio, { passive: true });
+
+    function loadVoices() {
+      if (!window.speechSynthesis) return;
+      const voices = window.speechSynthesis.getVoices();
+      if (!voices || voices.length === 0) return;
+
+      selectedVoice = voices.find(v => v.lang.toLowerCase().replace('_', '-') === 'pt-br') ||
+                      voices.find(v => v.lang.toLowerCase().startsWith('pt')) ||
+                      voices[0];
+      console.log("[PIOR Audio] Voz carregada:", selectedVoice ? `${selectedVoice.name} (${selectedVoice.lang})` : 'Padrão');
+    }
+
+    if (window.speechSynthesis) {
+      window.speechSynthesis.onvoiceschanged = loadVoices;
+      loadVoices();
+    }
+
+    function stopAssistantVoice() {
+      clearInterval(speechTimer);
+      if (window.speechSynthesis) {
+        window.speechSynthesis.cancel();
+      }
+      isAssistantSpeaking = false;
+      stopVoiceBtn.style.display = 'none';
+      wakeGlow.classList.remove('listening');
+      wakeStatusText.textContent = 'Aguardando ativação por voz: Diga "Pior, ..."';
+      wakeStatusText.style.color = 'var(--neon-cyan)';
+    }
+
+    stopVoiceBtn.onclick = stopAssistantVoice;
+
+    function sanitizeForVoice(text) {
+      return text
+        .replace(/[*_~`#>\-–—]/g, ' ')
+        .replace(/\[([^\]]+)\]\([^\)]+\)/g, '$1')
+        .replace(/\s+/g, ' ')
+        .trim();
+    }
+
+    function speakText(text) {
+      if (!window.speechSynthesis || !isVoiceOutputEnabled) return;
+      stopAssistantVoice();
+
+      const naturalText = sanitizeForVoice(text);
+      if (!naturalText) return;
+
+      if (!selectedVoice) loadVoices();
+
+      // Resume synthesis engine in case Chrome suspended it
+      window.speechSynthesis.resume();
+
+      const utterance = new SpeechSynthesisUtterance(naturalText);
+      currentUtterance = utterance; // Prevent Garbage Collection during speech!
+      if (selectedVoice) utterance.voice = selectedVoice;
+      utterance.lang = 'pt-BR';
+      utterance.rate = parseFloat(speechRateSlider.value) || 1.3;
+      utterance.pitch = 1.0;
+
+      utterance.onstart = () => {
+        isAssistantSpeaking = true;
+        stopVoiceBtn.style.display = 'inline-block';
+        wakeStatusText.textContent = 'PIOR falando... (Microfone em repouso)';
+        wakeStatusText.style.color = 'var(--neon-cyan)';
+
+        // Periodic resume to avoid Chrome audio freeze
+        clearInterval(speechTimer);
+        speechTimer = setInterval(() => {
+          if (window.speechSynthesis && window.speechSynthesis.speaking) {
+            window.speechSynthesis.resume();
+          } else {
+            clearInterval(speechTimer);
+          }
+        }, 4000);
+      };
+
+      utterance.onend = () => {
+        clearInterval(speechTimer);
+        isAssistantSpeaking = false;
+        stopVoiceBtn.style.display = 'none';
+        wakeStatusText.textContent = 'Aguardando ativação por voz: Diga "Pior, ..."';
+        wakeStatusText.style.color = 'var(--neon-cyan)';
+      };
+
+      utterance.onerror = (e) => {
+        console.warn("[Speech Synthesis Error]:", e);
+        clearInterval(speechTimer);
+        isAssistantSpeaking = false;
+        stopVoiceBtn.style.display = 'none';
+      };
+
+      window.speechSynthesis.speak(utterance);
+    }
+
+    // ---------------- CHAT ENGINE ----------------
+    async function sendMessage(text) {
+      const msg = (text || chatInput.value).trim();
+      if (!msg) return;
+
+      if (isAssistantSpeaking) {
+        stopAssistantVoice();
+      }
+
+      if (!text) chatInput.value = '';
+
+      const msgId = 'msg-' + Date.now();
+      const userDiv = document.createElement('div');
+      userDiv.className = 'msg-bubble msg-user';
+      userDiv.id = msgId;
+      userDiv.innerHTML = `
+        <div class="msg-header">
+          <span>VOCÊ</span>
+          <span class="pill-status pill-enviando" id="status-${msgId}">Enviando...</span>
+        </div>
+        ${escapeHtml(msg)}
+      `;
+      chatMessages.appendChild(userDiv);
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+
+      const botDiv = document.createElement('div');
+      botDiv.className = 'msg-bubble msg-assistant';
+      botDiv.innerHTML = `
+        <div class="msg-header">
+          <span>PIOR</span>
+          <span class="pill-status pill-enviando">Pensando...</span>
+        </div>
+        <em>Processando resposta...</em>
+      `;
+      chatMessages.appendChild(botDiv);
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+
+      const requestStart = performance.now();
+      delayTrackerText.textContent = 'Status: Enviando mensagem ao PIOR...';
+
+      try {
+        const resp = await fetch('/chat', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({
+            message: msg,
+            history: conversationHistory,
+            mode: detailMode
+          })
+        });
+
+        const userStatusPill = document.getElementById(`status-${msgId}`);
+        if (userStatusPill) {
+          userStatusPill.className = 'pill-status pill-enviado';
+          userStatusPill.textContent = 'Enviado ✓';
+        }
+
+        const data = await resp.json();
+        const totalRoundTrip = Math.round(performance.now() - requestStart);
+        const serverLatency = data.latency_ms || totalRoundTrip;
+
+        globalLatency.textContent = `Latência: ${serverLatency} ms`;
+        delayTrackerText.textContent = `Delay: ${serverLatency}ms | Total ida e volta: ${totalRoundTrip}ms`;
+
+        if (data.reply) {
+          let actionHtml = '';
+          if (data.action && data.action.type === 'email_draft') {
+            const act = data.action;
+            const draftId = 'draft_' + Math.random().toString(36).substr(2, 6);
+            actionHtml = `
+              <div class="action-widget action-email-card" style="margin-top:12px; padding:12px; border-radius:10px; background:rgba(0, 247, 255, 0.08); border:1px solid rgba(0, 247, 255, 0.4); text-align:left;">
+                <div style="font-weight:700; color:var(--neon-cyan); margin-bottom:8px; display:flex; align-items:center; gap:6px;">
+                  ✉️ RASCUNHO DE E-MAIL EM TEMPO REAL
+                </div>
+                <div style="margin-bottom:6px; font-size:12px;">
+                  <strong>Para:</strong> <input type="text" id="${draftId}_to" value="${escapeHtml(act.recipient)}" style="background:rgba(0,0,0,0.6); border:1px solid rgba(255,255,255,0.25); color:#fff; padding:4px 8px; border-radius:4px; width:70%; font-family:inherit;" />
+                </div>
+                <div style="margin-bottom:8px; font-size:12px;">
+                  <strong>Assunto:</strong> <input type="text" id="${draftId}_sub" value="${escapeHtml(act.subject)}" style="background:rgba(0,0,0,0.6); border:1px solid rgba(255,255,255,0.25); color:#fff; padding:4px 8px; border-radius:4px; width:70%; font-family:inherit;" />
+                </div>
+                <div style="margin-bottom:8px;">
+                  <textarea id="${draftId}_body" rows="4" style="width:100%; box-sizing:border-box; background:rgba(0,0,0,0.7); border:1px solid rgba(255,255,255,0.25); color:#e2eafc; padding:8px; border-radius:6px; font-family:inherit; font-size:12.5px; resize:vertical;">${escapeHtml(act.body)}</textarea>
+                </div>
+                <div style="display:flex; gap:10px;">
+                  <button type="button" onclick="sendMailDraft('${draftId}')" style="background:linear-gradient(135deg, #00f7ff, #00a8ff); color:#000; border:none; padding:7px 16px; border-radius:6px; font-weight:700; cursor:pointer;">
+                    🚀 Abrir no Cliente de E-mail
+                  </button>
+                  <button type="button" onclick="copyMailDraft('${draftId}')" style="background:rgba(255,255,255,0.12); color:#fff; border:1px solid rgba(255,255,255,0.3); padding:7px 16px; border-radius:6px; cursor:pointer;">
+                    📋 Copiar E-mail
+                  </button>
+                </div>
+              </div>
+            `;
+          } else if (data.action && data.action.type === 'calendar_event') {
+            const act = data.action;
+            actionHtml = `
+              <div class="action-widget" style="margin-top:10px; padding:10px 14px; border-radius:8px; background:rgba(0, 255, 136, 0.08); border:1px solid rgba(0, 255, 136, 0.4); text-align:left;">
+                <div style="color:var(--neon-green); font-weight:700;">📅 EVENTO NO CALENDÁRIO</div>
+                <div style="font-size:12px; margin-top:4px;"><strong>Título:</strong> ${escapeHtml(act.title)}</div>
+                <div style="font-size:12px;"><strong>Horário:</strong> ${escapeHtml(act.start_time)}</div>
+                <div style="font-size:11px; color:var(--text-muted); margin-top:2px;">Arquivo gerado: ${escapeHtml(act.filename)}</div>
+              </div>
+            `;
+          } else if (data.action && data.action.type === 'file_created') {
+            const act = data.action;
+            actionHtml = `
+              <div class="action-widget" style="margin-top:10px; padding:10px 14px; border-radius:8px; background:rgba(157, 0, 255, 0.1); border:1px solid rgba(157, 0, 255, 0.4); text-align:left;">
+                <div style="color:var(--neon-purple); font-weight:700;">📁 ARQUIVO CRIADO NO COMPUTADOR</div>
+                <div style="font-size:12px; margin-top:4px;"><strong>Nome:</strong> ${escapeHtml(act.filename)}</div>
+                <div style="font-size:11px; color:var(--text-muted);">Caminho: ${escapeHtml(act.filepath)}</div>
+              </div>
+            `;
+          }
+
+          botDiv.innerHTML = `
+            <div class="msg-header">
+              <span>PIOR <small style="font-weight:400; opacity:0.75;">(${data.backend || 'multimodal'})</small></span>
+              <span class="pill-status pill-latency">${serverLatency} ms</span>
+            </div>
+            ${escapeHtml(data.reply).replace(/\n/g, '<br>')}
+            ${actionHtml}
+          `;
+
+          conversationHistory.push({ role: "user", content: msg });
+          conversationHistory.push({ role: "assistant", content: data.reply });
+
+          speakText(data.reply);
+        } else {
+          botDiv.innerHTML = `
+            <div class="msg-header">
+              <span>PIOR (ERRO)</span>
+              <span class="pill-status" style="background:#550000; color:#ff7777;">Falha</span>
+            </div>
+            <span style="color:#ff6666;">Erro: ${escapeHtml(data.error || 'Sem resposta')}</span>
+          `;
+        }
+      } catch (err) {
+        const userStatusPill = document.getElementById(`status-${msgId}`);
+        if (userStatusPill) {
+          userStatusPill.className = 'pill-status';
+          userStatusPill.style.color = '#ff6666';
+          userStatusPill.textContent = 'Falha no envio';
+        }
+        botDiv.innerHTML = `
+          <div class="msg-header"><span>PIOR (FALHA)</span></div>
+          <span style="color:#ff6666;">Falha de conexão com o servidor.</span>
+        `;
+      }
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    sendBtn.onclick = () => sendMessage();
+    chatInput.onkeydown = (e) => {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        sendMessage();
+      }
+    };
+
+    // ---------------- ALEXA WAKE-WORD COM TEMPO AMPLIADO DE PAUSA ----------------
+    let recognition = null;
+    let isVoiceListeningEnabled = true;
+
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+    if (SpeechRecognition) {
+      recognition = new SpeechRecognition();
+      recognition.continuous = true;
+      recognition.interimResults = true;
+      recognition.lang = 'pt-BR';
+
+      let isWakeWordActive = false;
+      let wakeWordTimeout = null;
+
+      recognition.onresult = (event) => {
+        if (isAssistantSpeaking) return;
+
+        let interimTranscript = '';
+        let finalTranscript = '';
+
+        for (let i = event.resultIndex; i < event.results.length; ++i) {
+          if (event.results[i].isFinal) {
+            finalTranscript += event.results[i][0].transcript;
+          } else {
+            interimTranscript += event.results[i][0].transcript;
+          }
+        }
+
+        const heardText = (finalTranscript || interimTranscript).trim();
+        const lowerText = heardText.toLowerCase();
+
+        if (lowerText.includes('pior')) {
+          if (!isWakeWordActive) {
+            isWakeWordActive = true;
+            wakeGlow.classList.add('listening');
+            wakeStatusText.textContent = '● PIOR Ativado! Ouvindo com tempo livre para você formular...';
+            wakeStatusText.style.color = 'var(--neon-magenta)';
+          }
+
+          const pauseSeconds = parseFloat(micPauseSlider.value) || 2.2;
+          const pauseMs = pauseSeconds * 1000;
+
+          clearTimeout(wakeWordTimeout);
+          wakeWordTimeout = setTimeout(() => {
+            if (isWakeWordActive && (finalTranscript.trim().length > 0 || interimTranscript.trim().length > 0)) {
+              const command = (finalTranscript || interimTranscript).trim();
+              isWakeWordActive = false;
+              wakeGlow.classList.remove('listening');
+              wakeStatusText.textContent = 'Aguardando ativação por voz: Diga "Pior, ..."';
+              wakeStatusText.style.color = 'var(--neon-cyan)';
+
+              // REMOVE A PALAVRA "PIOR" E SAUDAÇÕES DO INÍCIO PARA NÃO CONFUNDIR O MODELO
+              let cleanPrompt = command
+                .replace(/\b(ei|olá|ola|oi)?\s*pior\b[\s,.:;!?]*/gi, '')
+                .trim();
+
+              // Se o usuário falou apenas "Pior", envia uma saudação amigável
+              if (!cleanPrompt) {
+                cleanPrompt = "Olá!";
+              }
+
+              sendMessage(cleanPrompt);
+            }
+          }, pauseMs);
+        }
+      };
+
+      recognition.onerror = (event) => {
+        if (event.error !== 'no-speech') {
+          console.warn("Speech error:", event.error);
+        }
+      };
+
+      recognition.onend = () => {
+        if (isVoiceListeningEnabled && !isAssistantSpeaking) {
+          try { recognition.start(); } catch (e) {}
+        }
+      };
+
+      try {
+        recognition.start();
+      } catch (e) {}
+
+    } else {
+      wakeStatusText.textContent = 'Navegador sem suporte a Web Speech. Use o teclado.';
+    }
+
+    toggleVoiceRecBtn.onclick = () => {
+      isVoiceListeningEnabled = !isVoiceListeningEnabled;
+      if (isVoiceListeningEnabled) {
+        toggleVoiceRecBtn.textContent = 'Pausar Mic';
+        wakeStatusText.textContent = 'Aguardando ativação por voz: Diga "Pior, ..."';
+        try { recognition && recognition.start(); } catch (e) {}
+      } else {
+        toggleVoiceRecBtn.textContent = 'Ativar Mic';
+        wakeStatusText.textContent = 'Voz Pausada';
+        wakeGlow.classList.remove('listening');
+        try { recognition && recognition.stop(); } catch (e) {}
+      }
+    };
+
+    // ---------------- CONTROLE DO CÉREBRO LOCAL & TELEMETRIA GPU / RAM ----------------
+    const btnStartBrain = document.getElementById('btnStartBrain');
+    const btnUnloadBrain = document.getElementById('btnUnloadBrain');
+    const brainModelSelect = document.getElementById('brainModelSelect');
+    const brainStatusBadge = document.getElementById('brainStatusBadge');
+    const brainStatusText = document.getElementById('brainStatusText');
+    const btnStartBrainText = document.getElementById('btnStartBrainText');
+
+    // Telemetry Elements
+    const gpuModelName = document.getElementById('gpuModelName');
+    const gpuUtilBadge = document.getElementById('gpuUtilBadge');
+    const vramBar = document.getElementById('vramBar');
+    const vramUsageText = document.getElementById('vramUsageText');
+    const vramPctText = document.getElementById('vramPctText');
+
+    const ramPctBadge = document.getElementById('ramPctBadge');
+    const ramBar = document.getElementById('ramBar');
+    const ramUsageText = document.getElementById('ramUsageText');
+    const ramFreeText = document.getElementById('ramFreeText');
+
+    let isBrainOperationInProgress = false;
+
+    async function updateTelemetry() {
+      try {
+        const res = await fetch('/api/system_status');
+        if (!res.ok) return;
+        const data = await res.json();
+
+        // GPU Telemetry (nvidia-smi)
+        if (data.gpu && data.gpu.available) {
+          gpuModelName.textContent = data.gpu.name || 'GPU';
+          gpuUtilBadge.textContent = `${data.gpu.gpu_util_percent}% • ${data.gpu.temperature_c}°C`;
+          vramBar.style.width = `${Math.min(100, data.gpu.vram_percent)}%`;
+          vramUsageText.textContent = `${data.gpu.used_vram_gb} / ${data.gpu.total_vram_gb} GB`;
+          vramPctText.textContent = `${data.gpu.vram_percent}%`;
+
+          if (data.gpu.vram_percent > 85) {
+            vramBar.style.background = 'var(--neon-magenta)';
+          } else if (data.gpu.vram_percent > 65) {
+            vramBar.style.background = '#ffaa00';
+          } else {
+            vramBar.style.background = 'var(--neon-cyan)';
+          }
+        } else {
+          gpuModelName.textContent = 'Indisponível';
+          vramUsageText.textContent = '--';
+        }
+
+        // RAM Telemetry
+        if (data.ram) {
+          ramPctBadge.textContent = `${data.ram.percent}%`;
+          ramBar.style.width = `${Math.min(100, data.ram.percent)}%`;
+          ramUsageText.textContent = `${data.ram.used_gb} / ${data.ram.total_gb} GB`;
+          ramFreeText.textContent = `Livre: ${data.ram.free_gb} GB`;
+
+          if (data.ram.percent > 85) {
+            ramBar.style.background = 'var(--neon-magenta)';
+          } else if (data.ram.percent > 70) {
+            ramBar.style.background = '#ffaa00';
+          } else {
+            ramBar.style.background = 'var(--neon-green)';
+          }
+        }
+
+        // Active Brain Status & Model Button Highlights
+        if (!isBrainOperationInProgress) {
+          const modelButtons = document.querySelectorAll('.btn-model-choice');
+          if (data.active_model) {
+            brainStatusBadge.className = 'brain-pill brain-pill-active';
+            const vramFormatted = data.active_model.vram_gb ? `${data.active_model.vram_gb}GB` : '';
+            brainStatusText.textContent = `Ativo: ${data.active_model.name} ${vramFormatted ? '(' + vramFormatted + ')' : ''}`;
+            btnStartBrainText.textContent = `Reiniciar (${data.active_model.name.replace('qwen3:', '').replace('qwen3-vl:', 'VL ')})`;
+            
+            if (brainModelSelect) {
+              brainModelSelect.value = data.active_model.name;
+            }
+
+            modelButtons.forEach(btn => {
+              if (btn.dataset.model === data.active_model.name) {
+                btn.classList.add('active');
+              } else {
+                btn.classList.remove('active');
+              }
+            });
+          } else {
+            brainStatusBadge.className = 'brain-pill brain-pill-idle';
+            brainStatusText.textContent = 'Cérebro Desligado (Ocioso)';
+            btnStartBrainText.textContent = `Ligar Cérebro (${brainModelSelect ? brainModelSelect.value.replace('qwen3:', '').replace('qwen3-vl:', 'VL ') : '8B'})`;
+            modelButtons.forEach(btn => btn.classList.remove('active'));
+          }
+        }
+
+      } catch (err) {
+        console.warn("Erro na telemetria:", err);
+      }
+    }
+
+    async function loadBrainModel(modelName) {
+      if (isBrainOperationInProgress) return;
+      isBrainOperationInProgress = true;
+
+      const modelButtons = document.querySelectorAll('.btn-model-choice');
+      modelButtons.forEach(btn => {
+        btn.disabled = true;
+        if (btn.dataset.model === modelName) {
+          btn.classList.add('active');
+        } else {
+          btn.classList.remove('active');
+        }
+      });
+
+      brainStatusBadge.className = 'brain-pill brain-pill-loading';
+      brainStatusText.textContent = `Carregando ${modelName}...`;
+      btnStartBrain.disabled = true;
+      btnUnloadBrain.disabled = true;
+      if (brainModelSelect) brainModelSelect.disabled = true;
+
+      try {
+        const res = await fetch('/api/model/load', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ model: modelName })
+        });
+        const result = await res.json();
+        if (result.success) {
+          if (brainModelSelect) brainModelSelect.value = modelName;
+        } else {
+          alert("Não foi possível carregar o modelo: " + (result.error || "Desconhecido"));
+        }
+      } catch (e) {
+        alert("Erro de conexão ao carregar modelo: " + e.message);
+      } finally {
+        isBrainOperationInProgress = false;
+        btnStartBrain.disabled = false;
+        btnUnloadBrain.disabled = false;
+        if (brainModelSelect) brainModelSelect.disabled = false;
+        modelButtons.forEach(btn => btn.disabled = false);
+        await updateTelemetry();
+      }
+    }
+
+    // Vincula os botões diretos de seleção dos 4 modelos
+    document.querySelectorAll('.btn-model-choice').forEach(btn => {
+      btn.onclick = () => {
+        const targetModel = btn.dataset.model;
+        if (targetModel) {
+          loadBrainModel(targetModel);
+        }
+      };
+    });
+
+    // Botão Ligar Cérebro (Carrega o modelo atualmente selecionado ou default qwen3-vl:8b)
+    btnStartBrain.onclick = () => {
+      const selected = brainModelSelect ? brainModelSelect.value : 'qwen3-vl:8b';
+      loadBrainModel(selected || 'qwen3-vl:8b');
+    };
+
+    // Alternar modelo caso o dropdown ainda seja acionado
+    if (brainModelSelect) {
+      brainModelSelect.onchange = () => {
+        const chosen = brainModelSelect.value;
+        btnStartBrainText.textContent = `Ligar Cérebro (${chosen.replace('qwen3:', '').replace('qwen3-vl:', 'VL ')})`;
+        loadBrainModel(chosen);
+      };
+    }
+
+    // Desligar Cérebro (Libera GPU VRAM)
+    btnUnloadBrain.onclick = async () => {
+      if (isBrainOperationInProgress) return;
+      isBrainOperationInProgress = true;
+      brainStatusBadge.className = 'brain-pill brain-pill-loading';
+      brainStatusText.textContent = 'Liberando GPU VRAM...';
+      btnStartBrain.disabled = true;
+      btnUnloadBrain.disabled = true;
+      document.querySelectorAll('.btn-model-choice').forEach(btn => {
+        btn.disabled = true;
+        btn.classList.remove('active');
+      });
+
+      try {
+        await fetch('/api/model/unload', { method: 'POST' });
+      } catch (e) {
+        console.error("Erro ao descarregar cérebro:", e);
+      } finally {
+        isBrainOperationInProgress = false;
+        btnStartBrain.disabled = false;
+        btnUnloadBrain.disabled = false;
+        document.querySelectorAll('.btn-model-choice').forEach(btn => btn.disabled = false);
+        await updateTelemetry();
+      }
+    };
+
+    // Inicia telemetria periódica a cada 2.5 segundos
+    setInterval(updateTelemetry, 2500);
+    setTimeout(updateTelemetry, 300);
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    }
+
+    window.sendMailDraft = function(draftId) {
+      const to = document.getElementById(draftId + '_to').value;
+      const sub = document.getElementById(draftId + '_sub').value;
+      const body = document.getElementById(draftId + '_body').value;
+      const url = `mailto:${encodeURIComponent(to)}?subject=${encodeURIComponent(sub)}&body=${encodeURIComponent(body)}`;
+      window.open(url, '_blank');
+    };
+
+    window.copyMailDraft = function(draftId) {
+      const to = document.getElementById(draftId + '_to').value;
+      const sub = document.getElementById(draftId + '_sub').value;
+      const body = document.getElementById(draftId + '_body').value;
+      const text = `Para: ${to}\nAssunto: ${sub}\n\n${body}`;
+      navigator.clipboard.writeText(text).then(() => {
+        alert("E-mail copiado para a área de transferência!");
+      });
+    };
+  </script>
+</body>
+</html>

@@ -1,0 +1,250 @@
+{
+  "total_testes": 30,
+  "sucessos": 30,
+  "latencia_media_servidor_ms": 1834.67,
+  "latencia_min_ms": 367,
+  "latencia_max_ms": 4794,
+  "roundtrip_medio_ms": 2172.67,
+  "dados": [
+    {
+      "iteracao": 1,
+      "prompt": "Pior, que horas são?",
+      "latencia_servidor_ms": 768,
+      "tempo_total_roundtrip_ms": 774,
+      "backend": "chat conversacional (direto)",
+      "status": "sucesso"
+    },
+    {
+      "iteracao": 2,
+      "prompt": "Qual é a capital da França?",
+      "latencia_servidor_ms": 367,
+      "tempo_total_roundtrip_ms": 382,
+      "backend": "chat conversacional (direto)",
+      "status": "sucesso"
+    },
+    {
+      "iteracao": 3,
+      "prompt": "Explique o que é Python de forma direta.",
+      "latencia_servidor_ms": 606,
+      "tempo_total_roundtrip_ms": 607,
+      "backend": "chat conversacional (direto)",
+      "status": "sucesso"
+    },
+    {
+      "iteracao": 4,
+      "prompt": "Pior, como está o tempo hoje?",
+      "latencia_servidor_ms": 411,
+      "tempo_total_roundtrip_ms": 414,
+      "backend": "chat conversacional (direto)",
+      "status": "sucesso"
+    },
+    {
+      "iteracao": 5,
+      "prompt": "Quanto é 25 multiplicado por 4?",
+      "latencia_servidor_ms": 487,
+      "tempo_total_roundtrip_ms": 491,
+      "backend": "chat conversacional (direto)",
+      "status": "sucesso"
+    },
+    {
+      "iteracao": 6,
+      "prompt": "Qual a diferença entre lista e tupla?",
+      "latencia_servidor_ms": 498,
+      "tempo_total_roundtrip_ms": 502,
+      "backend": "chat conversacional (direto)",
+      "status": "sucesso"
+    },
+    {
+      "iteracao": 7,
+      "prompt": "Pior, me dê um conselho de produtividade.",
+      "latencia_servidor_ms": 517,
+      "tempo_total_roundtrip_ms": 519,
+      "backend": "chat conversacional (direto)",
+      "status": "sucesso"
+    },
+    {
+      "iteracao": 8,
+      "prompt": "O que significa a sigla API?",
+      "latencia_servidor_ms": 445,
+      "tempo_total_roundtrip_ms": 449,
+      "backend": "chat conversacional (direto)",
+      "status": "sucesso"
+    },
+    {
+      "iteracao": 9,
+      "prompt": "Pior, cite três linguagens de programação.",
+      "latencia_servidor_ms": 1687,
+      "tempo_total_roundtrip_ms": 1689,
+      "backend": "chat conversacional (direto)",
+      "status": "sucesso"
+    },
+    {
+      "iteracao": 10,
+      "prompt": "Como funciona a memória RAM?",
+      "latencia_servidor_ms": 706,
+      "tempo_total_roundtrip_ms": 709,
+      "backend": "chat conversacional (direto)",
+      "status": "sucesso"
+    },
+    {
+      "iteracao": 11,
+      "prompt": "Pior, que horas são?",
+      "latencia_servidor_ms": 967,
+      "tempo_total_roundtrip_ms": 971,
+      "backend": "chat conversacional (direto)",
+      "status": "sucesso"
+    },
+    {
+      "iteracao": 12,
+      "prompt": "Qual é a capital da França?",
+      "latencia_servidor_ms": 968,
+      "tempo_total_roundtrip_ms": 972,
+      "backend": "chat conversacional (direto)",
+      "status": "sucesso"
+    },
+    {
+      "iteracao": 13,
+      "prompt": "Explique o que é Python de forma direta.",
+      "latencia_servidor_ms": 657,
+      "tempo_total_roundtrip_ms": 660,
+      "backend": "chat conversacional (direto)",
+      "status": "sucesso"
+    },
+    {
+      "iteracao": 14,
+      "prompt": "Pior, como está o tempo hoje?",
+      "latencia_servidor_ms": 638,
+      "tempo_total_roundtrip_ms": 641,
+      "backend": "chat conversacional (direto)",
+      "status": "sucesso"
+    },
+    {
+      "iteracao": 15,
+      "prompt": "Quanto é 25 multiplicado por 4?",
+      "latencia_servidor_ms": 502,
+      "tempo_total_roundtrip_ms": 506,
+      "backend": "chat conversacional (direto)",
+      "status": "sucesso"
+    },
+    {
+      "iteracao": 16,
+      "prompt": "Qual a diferença entre lista e tupla?",
+      "latencia_servidor_ms": 585,
+      "tempo_total_roundtrip_ms": 587,
+      "backend": "chat conversacional (direto)",
+      "status": "sucesso"
+    },
+    {
+      "iteracao": 17,
+      "prompt": "Pior, me dê um conselho de produtividade.",
+      "latencia_servidor_ms": 673,
+      "tempo_total_roundtrip_ms": 676,
+      "backend": "chat conversacional (direto)",
+      "status": "sucesso"
+    },
+    {
+      "iteracao": 18,
+      "prompt": "O que significa a sigla API?",
+      "latencia_servidor_ms": 687,
+      "tempo_total_roundtrip_ms": 712,
+      "backend": "chat conversacional (direto)",
+      "status": "sucesso"
+    },
+    {
+      "iteracao": 19,
+      "prompt": "Pior, cite três linguagens de programação.",
+      "latencia_servidor_ms": 2488,
+      "tempo_total_roundtrip_ms": 2490,
+      "backend": "chat conversacional (direto)",
+      "status": "sucesso"
+    },
+    {
+      "iteracao": 20,
+      "prompt": "Como funciona a memória RAM?",
+      "latencia_servidor_ms": 3598,
+      "tempo_total_roundtrip_ms": 3604,
+      "backend": "chat conversacional (direto)",
+      "status": "sucesso"
+    },
+    {
+      "iteracao": 21,
+      "prompt": "Pior, que horas são?",
+      "latencia_servidor_ms": 4794,
+      "tempo_total_roundtrip_ms": 9086,
+      "backend": "chat conversacional (direto)",
+      "status": "sucesso"
+    },
+    {
+      "iteracao": 22,
+      "prompt": "Qual é a capital da França?",
+      "latencia_servidor_ms": 4412,
+      "tempo_total_roundtrip_ms": 4417,
+      "backend": "chat conversacional (direto)",
+      "status": "sucesso"
+    },
+    {
+      "iteracao": 23,
+      "prompt": "Explique o que é Python de forma direta.",
+      "latencia_servidor_ms": 2739,
+      "tempo_total_roundtrip_ms": 2739,
+      "backend": "chat conversacional (direto)",
+      "status": "sucesso"
+    },
+    {
+      "iteracao": 24,
+      "prompt": "Pior, como está o tempo hoje?",
+      "latencia_servidor_ms": 2702,
+      "tempo_total_roundtrip_ms": 2705,
+      "backend": "chat conversacional (direto)",
+      "status": "sucesso"
+    },
+    {
+      "iteracao": 25,
+      "prompt": "Quanto é 25 multiplicado por 4?",
+      "latencia_servidor_ms": 2548,
+      "tempo_total_roundtrip_ms": 8265,
+      "backend": "chat conversacional (direto)",
+      "status": "sucesso"
+    },
+    {
+      "iteracao": 26,
+      "prompt": "Qual a diferença entre lista e tupla?",
+      "latencia_servidor_ms": 3497,
+      "tempo_total_roundtrip_ms": 3504,
+      "backend": "chat conversacional (direto)",
+      "status": "sucesso"
+    },
+    {
+      "iteracao": 27,
+      "prompt": "Pior, me dê um conselho de produtividade.",
+      "latencia_servidor_ms": 4190,
+      "tempo_total_roundtrip_ms": 4196,
+      "backend": "chat conversacional (direto)",
+      "status": "sucesso"
+    },
+    {
+      "iteracao": 28,
+      "prompt": "O que significa a sigla API?",
+      "latencia_servidor_ms": 4684,
+      "tempo_total_roundtrip_ms": 4686,
+      "backend": "chat conversacional (direto)",
+      "status": "sucesso"
+    },
+    {
+      "iteracao": 29,
+      "prompt": "Pior, cite três linguagens de programação.",
+      "latencia_servidor_ms": 2427,
+      "tempo_total_roundtrip_ms": 2431,
+      "backend": "chat conversacional (direto)",
+      "status": "sucesso"
+    },
+    {
+      "iteracao": 30,
+      "prompt": "Como funciona a memória RAM?",
+      "latencia_servidor_ms": 4792,
+      "tempo_total_roundtrip_ms": 4796,
+      "backend": "chat conversacional (direto)",
+      "status": "sucesso"
+    }
+  ]
+}

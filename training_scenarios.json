@@ -1,0 +1,177 @@
+{
+  "project": "PIOR - Assistente de Voz Multimodal Desktop",
+  "base_model": "pior-vl:8b",
+  "parent_model": "qwen3-vl:8b-instruct",
+  "description": "Especificação e grounding de 20 cenários com tarefas multimodais de alta precisão (telas compartilhadas, webcam, OCR, e-commerce, cupons e ações do SO) em Português do Brasil.",
+  "guidelines": {
+    "language": "pt-BR",
+    "voice_first": true,
+    "no_markdown": true,
+    "screen_perception": true,
+    "webcam_perception": true,
+    "web_search_augmentation": true,
+    "os_actions_integrated": true
+  },
+  "scenarios": [
+    {
+      "id": 1,
+      "category": "Área de Trabalho e Wallpaper",
+      "task": "Identificação e análise precisa do papel de parede (wallpaper)",
+      "user_prompt": "O que você vê no meu wallpaper? Qual é a arte ou personagem?",
+      "visual_trigger": ["wallpaper", "papel de parede", "fundo de tela", "desktop"],
+      "expected_behavior": "Focar no fundo da área de trabalho por trás das janelas, identificar a franquia (jogo, anime, filme, HQ ou arte digital), personagens, paisagem e cores centrais sem markdown."
+    },
+    {
+      "id": 2,
+      "category": "OCR e Leitura de Tela em Tempo Real",
+      "task": "Transcrever com exatidão textos, menus, abas e mensagens abertas na tela",
+      "user_prompt": "Leia o que está escrito nessa janela ou no documento na minha tela.",
+      "visual_trigger": ["leia", "o que está escrito", "leitura", "ler", "texto na tela"],
+      "expected_behavior": "Extrair e transcrever com total fidelidade os caracteres, títulos e mensagens visíveis."
+    },
+    {
+      "id": 3,
+      "category": "Tradução de Tela",
+      "task": "Traduzir em tempo real trechos ou páginas inteiras visíveis na tela",
+      "user_prompt": "Traduza para português o texto que está nessa página em inglês na minha tela.",
+      "visual_trigger": ["traduza", "traduz", "tradução", "em inglês", "em português"],
+      "expected_behavior": "Localizar o texto no idioma estrangeiro e pronunciar a tradução precisa e natural em Português do Brasil."
+    },
+    {
+      "id": 4,
+      "category": "E-Commerce e Cupons de Desconto",
+      "task": "Detectar loja online ou produto na tela e fornecer cupons de desconto ativos",
+      "user_prompt": "Estou nesta loja online vendo um produto, quais cupons de desconto estão disponíveis?",
+      "visual_trigger": ["loja", "comprar", "cupom", "cupons", "desconto", "preço"],
+      "expected_behavior": "Reconhecer a loja (Amazon, Kabum, Mercado Livre, etc.), acionar a ferramenta de cupons web e listar os códigos e ofertas de desconto."
+    },
+    {
+      "id": 5,
+      "category": "Ações no Sistema: Redação de E-mail Interativo",
+      "task": "Fluxo conversacional multi-turno de redação e envio de e-mail",
+      "user_prompt": "Envie um e-mail para o professor Carlos.",
+      "visual_trigger": ["envie um e-mail", "mande um email", "redigir email"],
+      "expected_behavior": "Perguntar proativamente: 'O que você quer dizer no corpo do e-mail para Carlos?', aguardar a resposta, redigir o e-mail e renderizar o card de rascunho com botão mailto e copiar."
+    },
+    {
+      "id": 6,
+      "category": "Ações no Sistema: Agendamento no Calendário",
+      "task": "Criação de eventos no calendário do usuário em formato .ics",
+      "user_prompt": "Agende uma reunião de alinhamento do TCC para amanhã às 14 horas.",
+      "visual_trigger": ["agende", "calendário", "marcar reunião", "compromisso"],
+      "expected_behavior": "Gerar o arquivo .ics localmente no diretório de Documentos do Windows e confirmar o agendamento em voz alta."
+    },
+    {
+      "id": 7,
+      "category": "Ações no Sistema: Criação de Arquivos Locais",
+      "task": "Gerar anotações, atas ou arquivos de texto salvos diretamente no disco",
+      "user_prompt": "Crie um arquivo de texto com as notas da reunião sobre o projeto de IA.",
+      "visual_trigger": ["crie um arquivo", "salve uma anotação", "arquivo de texto"],
+      "expected_behavior": "Escrever o conteúdo no arquivo local (ex: documentos/notas.txt) e avisar ao usuário que foi salvo com sucesso."
+    },
+    {
+      "id": 8,
+      "category": "Arte e Decoração na Webcam",
+      "task": "Identificação e análise de quadros e pôsteres na parede",
+      "user_prompt": "Você consegue identificar o quadro vermelho na parede atrás de mim?",
+      "visual_trigger": ["quadro", "parede", "atrás de mim", "poster"],
+      "expected_behavior": "Reconhecer a arte, cores, moldura e estilo do quadro visualizado na webcam."
+    },
+    {
+      "id": 9,
+      "category": "Música e Lançamentos Recentes",
+      "task": "Reconhecer capas de álbuns de música e pesquisar lançamentos recentes",
+      "user_prompt": "O quadro atrás de mim é a capa de um álbum recente de uma banda, pesquise o que é.",
+      "visual_trigger": ["álbum", "album", "banda", "lançado recentemente", "último mês"],
+      "expected_behavior": "Identificar elementos do álbum na webcam, acionar busca na web sobre o lançamento e responder com nome da banda e disco."
+    },
+    {
+      "id": 10,
+      "category": "Inspeção de Código e Depuração",
+      "task": "Localizar erros de sintaxe ou exceções no editor de código aberto",
+      "user_prompt": "Veja no meu VS Code onde está apontando o erro de compilação.",
+      "visual_trigger": ["código", "erro", "vs code", "terminal", "exceção"],
+      "expected_behavior": "Identificar a janela da IDE ou terminal, ler a linha com sublinhado vermelho ou traceback e explicar a causa."
+    },
+    {
+      "id": 11,
+      "category": "Dispositivos e Periféricos",
+      "task": "Identificação de eletrônicos, placas e hardware na mesa ou câmera",
+      "user_prompt": "Que periférico ou placa eletrônica é essa que estou segurando?",
+      "visual_trigger": ["aparelho", "placa", "mouse", "teclado", "hardware", "mesa"],
+      "expected_behavior": "Identificar o formato, modelo aparente, conectores e fabricante do componente."
+    },
+    {
+      "id": 12,
+      "category": "Vestuário e Cores",
+      "task": "Análise de roupas, logotipos e cores do usuário",
+      "user_prompt": "Qual é a cor da minha camisa e o que está estampado nela?",
+      "visual_trigger": ["camisa", "roupa", "cor", "estampa"],
+      "expected_behavior": "Informar a cor exata e descrever o texto ou estampa presente na peça."
+    },
+    {
+      "id": 13,
+      "category": "Gestos e Contagem Manual",
+      "task": "Contagem de dedos e reconhecimento de sinais com as mãos",
+      "user_prompt": "Quantos dedos estou levantando para a câmera agora?",
+      "visual_trigger": ["dedos", "mão", "levantando", "gesto", "joinha"],
+      "expected_behavior": "Contar com exatidão a quantidade de dedos estendidos e nomear o gesto."
+    },
+    {
+      "id": 14,
+      "category": "Ambiente e Iluminação",
+      "task": "Audiodescrição do espaço físico, arrumação e nível de iluminação",
+      "user_prompt": "Como está a iluminação do meu quarto e o ambiente ao meu redor?",
+      "visual_trigger": ["ambiente", "iluminação", "ao meu redor", "sala", "quarto"],
+      "expected_behavior": "Descrever com naturalidade a distribuição da luz, móveis do fundo e ambientação geral."
+    },
+    {
+      "id": 15,
+      "category": "Produtos Comerciais e Embalagens",
+      "task": "Reconhecimento de rótulos de alimentos, marcas e garrafas",
+      "user_prompt": "Qual é a marca deste produto ou refrigerante na minha mão?",
+      "visual_trigger": ["marca", "produto", "refrigerante", "garrafa", "lata"],
+      "expected_behavior": "Identificar a marca comercial, sabor e características da embalagem."
+    },
+    {
+      "id": 16,
+      "category": "Documentos e Rótulos Impressos",
+      "task": "Leitura de prazos de validade ou dados em embalagens",
+      "user_prompt": "Veja a data de validade impressa nesta embalagem.",
+      "visual_trigger": ["validade", "vencimento", "data impressa", "rótulo"],
+      "expected_behavior": "Localizar os números de data de fabricação e validade com máxima precisão."
+    },
+    {
+      "id": 17,
+      "category": "Contagem de Objetos na Mesa",
+      "task": "Inventário visual de itens espalhados pela bancada",
+      "user_prompt": "Quantos objetos ou canetas você vê aqui na minha mesa?",
+      "visual_trigger": ["quantos objetos", "itens na mesa", "conte as canetas"],
+      "expected_behavior": "Escanear a superfície e fornecer a contagem correta discriminando os itens."
+    },
+    {
+      "id": 18,
+      "category": "Audiodescrição Guiada (Acessibilidade)",
+      "task": "Descrição espacial instantânea com posições relativas para acessibilidade",
+      "user_prompt": "Pior, me dê uma audiodescrição rápida do que está na minha frente.",
+      "visual_trigger": ["audiodescrição", "o que está na minha frente", "descreva"],
+      "expected_behavior": "Descrever com clareza o que está à frente, à esquerda e à direita em linguagem acolhedora."
+    },
+    {
+      "id": 19,
+      "category": "Memória Visual Multi-Turno",
+      "task": "Manter a continuidade conversacional comparando itens mostrados antes",
+      "user_prompt": "E em comparação com aquele outro objeto que mostrei antes, o que mudou?",
+      "visual_trigger": ["que te mostrei antes", "o outro", "em relação ao anterior"],
+      "expected_behavior": "Recuperar o histórico recente do diálogo e contrastar os elementos visuais sem se perder."
+    },
+    {
+      "id": 20,
+      "category": "Pesquisa Web Factual com Visão Integrada",
+      "task": "Identificar item na câmera e buscar cotação ou dados atualizados na internet",
+      "user_prompt": "Pesquise na internet o valor de mercado e novidades sobre essa placa que estou mostrando.",
+      "visual_trigger": ["pesquise na internet", "valor", "preço atual", "notícias sobre"],
+      "expected_behavior": "Identificar o modelo do item e acionar busca web para trazer valores e novidades em tempo real."
+    }
+  ]
+}

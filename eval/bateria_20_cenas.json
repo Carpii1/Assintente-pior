@@ -1,0 +1,208 @@
+{
+  "total_cenas": 20,
+  "acertos": 15,
+  "erros": 5,
+  "taxa_acerto_pct": 75.0,
+  "detalhes": [
+    {
+      "id": 1,
+      "tipo": "conhecimento_geral",
+      "pergunta": "Qual é a capital do Brasil?",
+      "palavra_chave_esperada": "brasília",
+      "resultado": "ACERTO",
+      "correto": true,
+      "duracao_ms": 5548,
+      "resposta_obtida": "Brasília."
+    },
+    {
+      "id": 2,
+      "tipo": "matematica",
+      "pergunta": "Quanto é 15 somado com 27?",
+      "palavra_chave_esperada": "42",
+      "resultado": "ACERTO",
+      "correto": true,
+      "duracao_ms": 3474,
+      "resposta_obtida": "42."
+    },
+    {
+      "id": 3,
+      "tipo": "programacao",
+      "pergunta": "Qual função em Python imprime texto na tela?",
+      "palavra_chave_esperada": "print",
+      "resultado": "ACERTO",
+      "correto": true,
+      "duracao_ms": 1155,
+      "resposta_obtida": "A função é o print, que simplesmente recebe o texto entre parênteses para exibição."
+    },
+    {
+      "id": 4,
+      "tipo": "ciencia",
+      "pergunta": "Qual é a fórmula da água?",
+      "palavra_chave_esperada": "h2o",
+      "resultado": "ERRO_OU_DIVERGENCIA",
+      "correto": false,
+      "duracao_ms": 3437,
+      "resposta_obtida": "A fórmula da água é H₂O."
+    },
+    {
+      "id": 5,
+      "tipo": "nome_proprio",
+      "pergunta": "Pior, qual é o seu nome oficial?",
+      "palavra_chave_esperada": "pior",
+      "resultado": "ACERTO",
+      "correto": true,
+      "duracao_ms": 1008,
+      "resposta_obtida": "PIOR."
+    },
+    {
+      "id": 6,
+      "tipo": "distincao_adjetivo",
+      "pergunta": "Qual é o pior erro de sintaxe do Python?",
+      "palavra_chave_esperada": "syntaxerror",
+      "resultado": "ACERTO",
+      "correto": true,
+      "duracao_ms": 2615,
+      "resposta_obtida": "O erro de sintaxe mais frequente e frustrante em Python é a má indentação, que faz o interpretador gerar um IndentationError ou, caso o bloco esteja incorreto, um SyntaxError de “expected ':'”. Isso costuma acontecer quando se mistura tabs e espaços ou se esquece de colocar o dois pontos após uma definição de função, classe ou estrutura de controle."
+    },
+    {
+      "id": 7,
+      "tipo": "logica",
+      "pergunta": "Se um triângulo tem três lados, quantos tem um quadrado?",
+      "palavra_chave_esperada": "quatro",
+      "resultado": "ACERTO",
+      "correto": true,
+      "duracao_ms": 4495,
+      "resposta_obtida": "Um quadrado tem quatro lados."
+    },
+    {
+      "id": 8,
+      "tipo": "conhecimento_geral",
+      "pergunta": "Em qual continente fica o Japão?",
+      "palavra_chave_esperada": "ásia",
+      "resultado": "ACERTO",
+      "correto": true,
+      "duracao_ms": 3494,
+      "resposta_obtida": "O Japão fica no continente da Ásia."
+    },
+    {
+      "id": 9,
+      "tipo": "hardware",
+      "pergunta": "O que significa a sigla CPU?",
+      "palavra_chave_esperada": "processamento",
+      "resultado": "ACERTO",
+      "correto": true,
+      "duracao_ms": 2596,
+      "resposta_obtida": "CPU significa Unidade Central de Processamento. É o cérebro do computador que executa as instruções e processa dados."
+    },
+    {
+      "id": 10,
+      "tipo": "idioma",
+      "pergunta": "Em que língua nós estamos conversando agora?",
+      "palavra_chave_esperada": "português",
+      "resultado": "ACERTO",
+      "correto": true,
+      "duracao_ms": 3541,
+      "resposta_obtida": "Estamos conversando em português do Brasil."
+    },
+    {
+      "id": 11,
+      "tipo": "matematica",
+      "pergunta": "Quanto é 100 dividido por 4?",
+      "palavra_chave_esperada": "25",
+      "resultado": "ACERTO",
+      "correto": true,
+      "duracao_ms": 4568,
+      "resposta_obtida": "São 25."
+    },
+    {
+      "id": 12,
+      "tipo": "programacao",
+      "pergunta": "Python é uma linguagem compilada ou interpretada?",
+      "palavra_chave_esperada": "interpretada",
+      "resultado": "ACERTO",
+      "correto": true,
+      "duracao_ms": 4496,
+      "resposta_obtida": "Python é interpretada, mas o CPython compila o código‑fonte para bytecode que a máquina virtual executa. Assim, não há um binário final, apenas a execução dinâmica do bytecode."
+    },
+    {
+      "id": 13,
+      "tipo": "sistema",
+      "pergunta": "O que significa o termo SO em computação?",
+      "palavra_chave_esperada": "sistema operacional",
+      "resultado": "ACERTO",
+      "correto": true,
+      "duracao_ms": 4523,
+      "resposta_obtida": "SO significa Sistema Operacional. É o software que gerencia o hardware do computador e oferece serviços básicos para outros programas."
+    },
+    {
+      "id": 14,
+      "tipo": "web",
+      "pergunta": "Qual protocolo seguro é usado na web, HTTP ou HTTPS?",
+      "palavra_chave_esperada": "https",
+      "resultado": "ACERTO",
+      "correto": true,
+      "duracao_ms": 1596,
+      "resposta_obtida": "O HTTPS é o protocolo seguro usado na web, pois adiciona uma camada de criptografia ao HTTP. O HTTP, por outro lado, não oferece segurança."
+    },
+    {
+      "id": 15,
+      "tipo": "visão_demanda",
+      "pergunta": "Pior, o que tem na tela?",
+      "palavra_chave_esperada": "tela",
+      "resultado": "ERRO_OU_DIVERGENCIA",
+      "correto": false,
+      "duracao_ms": 4649,
+      "resposta_obtida": "Identifiquei múltiplas janelas de terminal e o VS Code rodando em vários monitores. Há também a janela do Discord, um navegador aberto e pastas de download visíveis sobre o papel de parede dourado."
+    },
+    {
+      "id": 16,
+      "tipo": "conversacao",
+      "pergunta": "Pior, você pode me ajudar?",
+      "palavra_chave_esperada": "ajudar",
+      "resultado": "ERRO_OU_DIVERGENCIA",
+      "correto": false,
+      "duracao_ms": 612,
+      "resposta_obtida": "Claro, o que você precisa?"
+    },
+    {
+      "id": 17,
+      "tipo": "tempo",
+      "pergunta": "Quantos minutos tem uma hora?",
+      "palavra_chave_esperada": "60",
+      "resultado": "ERRO_OU_DIVERGENCIA",
+      "correto": false,
+      "duracao_ms": 1457,
+      "resposta_obtida": "Uma hora tem sessenta minutos."
+    },
+    {
+      "id": 18,
+      "tipo": "ciencia",
+      "pergunta": "Qual planeta é conhecido como o planeta vermelho?",
+      "palavra_chave_esperada": "marte",
+      "resultado": "ACERTO",
+      "correto": true,
+      "duracao_ms": 4406,
+      "resposta_obtida": "Marte."
+    },
+    {
+      "id": 19,
+      "tipo": "logica",
+      "pergunta": "O gelo é água em qual estado físico?",
+      "palavra_chave_esperada": "sólido",
+      "resultado": "ACERTO",
+      "correto": true,
+      "duracao_ms": 3626,
+      "resposta_obtida": "Gelo é água no estado sólido. Quando a temperatura cai, a água congela e se transforma em gelo. É a mesma substância, só que em forma sólida."
+    },
+    {
+      "id": 20,
+      "tipo": "rede",
+      "pergunta": "Qual porta padrão é usada pelo HTTP comum?",
+      "palavra_chave_esperada": "80",
+      "resultado": "ERRO_OU_DIVERGENCIA",
+      "correto": false,
+      "duracao_ms": 3944,
+      "resposta_obtida": "A porta padrão usada pelo HTTP comum é a número oitenta."
+    }
+  ]
+}

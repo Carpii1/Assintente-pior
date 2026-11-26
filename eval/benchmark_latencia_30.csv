@@ -1,0 +1,31 @@
+iteracao,prompt,latencia_servidor_ms,tempo_total_roundtrip_ms,backend,status
+1,"Pior, que horas são?",768,774,chat conversacional (direto),sucesso
+2,Qual é a capital da França?,367,382,chat conversacional (direto),sucesso
+3,Explique o que é Python de forma direta.,606,607,chat conversacional (direto),sucesso
+4,"Pior, como está o tempo hoje?",411,414,chat conversacional (direto),sucesso
+5,Quanto é 25 multiplicado por 4?,487,491,chat conversacional (direto),sucesso
+6,Qual a diferença entre lista e tupla?,498,502,chat conversacional (direto),sucesso
+7,"Pior, me dê um conselho de produtividade.",517,519,chat conversacional (direto),sucesso
+8,O que significa a sigla API?,445,449,chat conversacional (direto),sucesso
+9,"Pior, cite três linguagens de programação.",1687,1689,chat conversacional (direto),sucesso
+10,Como funciona a memória RAM?,706,709,chat conversacional (direto),sucesso
+11,"Pior, que horas são?",967,971,chat conversacional (direto),sucesso
+12,Qual é a capital da França?,968,972,chat conversacional (direto),sucesso
+13,Explique o que é Python de forma direta.,657,660,chat conversacional (direto),sucesso
+14,"Pior, como está o tempo hoje?",638,641,chat conversacional (direto),sucesso
+15,Quanto é 25 multiplicado por 4?,502,506,chat conversacional (direto),sucesso
+16,Qual a diferença entre lista e tupla?,585,587,chat conversacional (direto),sucesso
+17,"Pior, me dê um conselho de produtividade.",673,676,chat conversacional (direto),sucesso
+18,O que significa a sigla API?,687,712,chat conversacional (direto),sucesso
+19,"Pior, cite três linguagens de programação.",2488,2490,chat conversacional (direto),sucesso
+20,Como funciona a memória RAM?,3598,3604,chat conversacional (direto),sucesso
+21,"Pior, que horas são?",4794,9086,chat conversacional (direto),sucesso
+22,Qual é a capital da França?,4412,4417,chat conversacional (direto),sucesso
+23,Explique o que é Python de forma direta.,2739,2739,chat conversacional (direto),sucesso
+24,"Pior, como está o tempo hoje?",2702,2705,chat conversacional (direto),sucesso
+25,Quanto é 25 multiplicado por 4?,2548,8265,chat conversacional (direto),sucesso
+26,Qual a diferença entre lista e tupla?,3497,3504,chat conversacional (direto),sucesso
+27,"Pior, me dê um conselho de produtividade.",4190,4196,chat conversacional (direto),sucesso
+28,O que significa a sigla API?,4684,4686,chat conversacional (direto),sucesso
+29,"Pior, cite três linguagens de programação.",2427,2431,chat conversacional (direto),sucesso
+30,Como funciona a memória RAM?,4792,4796,chat conversacional (direto),sucesso

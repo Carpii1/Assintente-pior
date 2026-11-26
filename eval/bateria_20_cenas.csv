@@ -1,0 +1,21 @@
+id,tipo,pergunta,palavra_chave_esperada,resultado,correto,duracao_ms,resposta_obtida
+1,conhecimento_geral,Qual é a capital do Brasil?,brasília,ACERTO,True,5548,Brasília.
+2,matematica,Quanto é 15 somado com 27?,42,ACERTO,True,3474,42.
+3,programacao,Qual função em Python imprime texto na tela?,print,ACERTO,True,1155,"A função é o print, que simplesmente recebe o texto entre parênteses para exibição."
+4,ciencia,Qual é a fórmula da água?,h2o,ERRO_OU_DIVERGENCIA,False,3437,A fórmula da água é H₂O.
+5,nome_proprio,"Pior, qual é o seu nome oficial?",pior,ACERTO,True,1008,PIOR.
+6,distincao_adjetivo,Qual é o pior erro de sintaxe do Python?,syntaxerror,ACERTO,True,2615,"O erro de sintaxe mais frequente e frustrante em Python é a má indentação, que faz o interpretador gerar um IndentationError ou, caso o bloco esteja incorreto, um SyntaxError de “expected ':'”. Isso costuma acontecer quando se mistura tabs e espaços ou se esquece de colocar o dois pontos após uma definição de função, classe ou estrutura de controle."
+7,logica,"Se um triângulo tem três lados, quantos tem um quadrado?",quatro,ACERTO,True,4495,Um quadrado tem quatro lados.
+8,conhecimento_geral,Em qual continente fica o Japão?,ásia,ACERTO,True,3494,O Japão fica no continente da Ásia.
+9,hardware,O que significa a sigla CPU?,processamento,ACERTO,True,2596,CPU significa Unidade Central de Processamento. É o cérebro do computador que executa as instruções e processa dados.
+10,idioma,Em que língua nós estamos conversando agora?,português,ACERTO,True,3541,Estamos conversando em português do Brasil.
+11,matematica,Quanto é 100 dividido por 4?,25,ACERTO,True,4568,São 25.
+12,programacao,Python é uma linguagem compilada ou interpretada?,interpretada,ACERTO,True,4496,"Python é interpretada, mas o CPython compila o código‑fonte para bytecode que a máquina virtual executa. Assim, não há um binário final, apenas a execução dinâmica do bytecode."
+13,sistema,O que significa o termo SO em computação?,sistema operacional,ACERTO,True,4523,SO significa Sistema Operacional. É o software que gerencia o hardware do computador e oferece serviços básicos para outros programas.
+14,web,"Qual protocolo seguro é usado na web, HTTP ou HTTPS?",https,ACERTO,True,1596,"O HTTPS é o protocolo seguro usado na web, pois adiciona uma camada de criptografia ao HTTP. O HTTP, por outro lado, não oferece segurança."
+15,visão_demanda,"Pior, o que tem na tela?",tela,ERRO_OU_DIVERGENCIA,False,4649,"Identifiquei múltiplas janelas de terminal e o VS Code rodando em vários monitores. Há também a janela do Discord, um navegador aberto e pastas de download visíveis sobre o papel de parede dourado."
+16,conversacao,"Pior, você pode me ajudar?",ajudar,ERRO_OU_DIVERGENCIA,False,612,"Claro, o que você precisa?"
+17,tempo,Quantos minutos tem uma hora?,60,ERRO_OU_DIVERGENCIA,False,1457,Uma hora tem sessenta minutos.
+18,ciencia,Qual planeta é conhecido como o planeta vermelho?,marte,ACERTO,True,4406,Marte.
+19,logica,O gelo é água em qual estado físico?,sólido,ACERTO,True,3626,"Gelo é água no estado sólido. Quando a temperatura cai, a água congela e se transforma em gelo. É a mesma substância, só que em forma sólida."
+20,rede,Qual porta padrão é usada pelo HTTP comum?,80,ERRO_OU_DIVERGENCIA,False,3944,A porta padrão usada pelo HTTP comum é a número oitenta.
